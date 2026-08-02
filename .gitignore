@@ -1,0 +1,28 @@
+# data & artifacts are recreated by scripts; sizes documented in README
+data/
+artifacts/
+
+# python
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+
+# notebooks
+.ipynb_checkpoints/
+
+# editor / os / tooling
+.vscode/
+.idea/
+.claude/settings.local.json
+
+# personal working notes — kept locally, never published
+RecSync.md
+Thumbs.db
+.DS_Store
+
+# wandb / logs
+wandb/
+*.log

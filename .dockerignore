@@ -1,0 +1,19 @@
+# Keep the build context small — without this, `docker build` uploads .venv (~2GB)
+# and the raw MovieLens download (~1GB) before the first layer even runs.
+.venv/
+venv/
+data/raw/
+data/processed_smoke/
+artifacts/smoke/
+artifacts/item_knn_sim.npz
+artifacts/*_nologq.*
+artifacts/two_tower.pt
+notebooks/
+results/
+tests/
+scripts/
+.git/
+.pytest_cache/
+__pycache__/
+*.pyc
+*.ipynb

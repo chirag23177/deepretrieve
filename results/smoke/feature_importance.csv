@@ -1,0 +1,16 @@
+feature,gain
+retrieval_score,2768.88
+user_genre_affinity,134.77
+user_activity_log,67.17
+item_pop_log,66.96
+item_mean_rating,33.63
+genre_Thriller,20.13
+genre_Romance,9.51
+genre_Horror,0.00
+genre_Action,0.00
+genre_Drama,0.00
+genre_Sci-Fi,0.00
+genre_Comedy,0.00
+genre_Animation,0.00
+user_mean_rating,0.00
+recency_days,0.00

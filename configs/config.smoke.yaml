@@ -1,0 +1,78 @@
+# Smoke-test config: tiny synthetic dataset, everything scaled down so the full
+# pipeline (preprocess -> baselines -> two-tower -> FAISS -> ranker -> eval)
+# runs end-to-end on CPU in ~2 minutes. Numbers from this config are for
+# wiring verification ONLY — never report them.
+
+seed: 42
+
+paths:
+  raw_dir: data/raw
+  processed_dir: data/processed_smoke
+  artifacts_dir: artifacts/smoke
+  results_dir: results/smoke
+
+data:
+  dataset_url: ""
+  dataset_name: ml-synthetic
+  positive_threshold: 4.0
+  min_user_interactions: 5
+  min_item_interactions: 5
+
+split:
+  train_frac: 0.80
+  val_frac: 0.10
+
+eval:
+  k_values: [10, 50, 100]
+  user_batch_size: 512
+  val_users_sample: 2000
+
+baselines:
+  item_knn:
+    top_neighbors: 50
+    chunk_size: 256
+
+retrieval:
+  embedding_dim: 32
+  user_mlp_dims: [64, 32]
+  item_mlp_dims: [64, 32]
+  genre_proj_dim: 16
+  temperature: 0.05
+  learnable_temperature: false
+  logq_correction: true
+  batch_size: 1024
+  lr: 0.001
+  weight_decay: 0.0
+  epochs: 8
+  early_stopping_patience: 3
+  num_workers: 0
+  device: cpu
+
+faiss:
+  ivf_nlist: 8
+  nprobe_grid: [1, 2, 4]
+  benchmark_queries: 500
+  top_k: 100
+
+ranker:
+  ranker_window_frac: 0.15
+  candidates_per_user: 100
+  max_users: 2000
+  ranker_val_frac: 0.15
+  top_genres: 8
+  lightgbm:
+    objective: lambdarank
+    metric: ndcg
+    eval_at: [10]
+    num_leaves: 31
+    max_depth: 6
+    learning_rate: 0.05
+    n_estimators: 100
+    early_stopping_rounds: 20
+    min_child_samples: 5
+
+serving:
+  host: 0.0.0.0
+  port: 8000
+  retrieve_k: 100
+  default_k: 10

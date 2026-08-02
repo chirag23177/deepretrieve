@@ -1,0 +1,17 @@
+# Serving-only dependencies (used by the Dockerfile).
+#
+# The API never imports torch: the user tower is id-only, so user vectors are
+# precomputed to user_embeddings.npy at training time and the request path is
+# numpy + FAISS + LightGBM. The one torch reference in the codebase
+# (src/common.set_seed) is guarded by try/except ImportError.
+#
+# Keeping torch out of the image drops ~200 MB and most of the build time.
+# Use requirements.txt for training/eval, which does need torch.
+numpy>=1.26
+pandas>=2.1
+pyarrow>=14.0
+lightgbm>=4.3
+faiss-cpu>=1.8
+fastapi>=0.110
+uvicorn[standard]>=0.29
+pyyaml>=6.0

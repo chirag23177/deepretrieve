@@ -1,0 +1,83 @@
+# All hyperparameters and paths live here. Scripts read this file; nothing is hardcoded.
+
+seed: 42
+
+paths:
+  raw_dir: data/raw
+  processed_dir: data/processed
+  artifacts_dir: artifacts
+  results_dir: results
+
+data:
+  dataset_url: https://files.grouplens.org/datasets/movielens/ml-25m.zip
+  dataset_name: ml-25m
+  # implicit-feedback conversion: rating >= threshold -> positive, everything else dropped.
+  # Rejected alternatives: threshold 3.5 (noisier positives poison in-batch negative
+  # sampling), keep-all-weighted (complicates the loss for little gain on ML-25M).
+  positive_threshold: 4.0
+  # iterative k-core filtering: keep users/items with >= min_interactions positives
+  min_user_interactions: 5
+  min_item_interactions: 5
+
+split:
+  # global temporal split by interaction timestamp quantiles
+  train_frac: 0.80
+  val_frac: 0.10   # test gets the remainder (0.10)
+
+eval:
+  k_values: [10, 50, 100]
+  user_batch_size: 1024
+  # cap on val users scored per epoch during training (full test set is always full-ranked)
+  val_users_sample: 20000
+
+baselines:
+  item_knn:
+    top_neighbors: 200      # truncate similarity matrix to top-N neighbors per item
+    chunk_size: 2048        # items per chunk when computing similarities
+
+retrieval:
+  embedding_dim: 64
+  user_mlp_dims: [128, 64]
+  item_mlp_dims: [128, 64]
+  genre_proj_dim: 32
+  temperature: 0.05
+  learnable_temperature: false
+  logq_correction: true     # set false for the ablation run
+  batch_size: 4096
+  lr: 0.001
+  weight_decay: 0.0
+  epochs: 10
+  early_stopping_patience: 2   # epochs without val Recall@100 improvement
+  num_workers: 0               # 0 is safest on Windows
+  device: auto                 # auto | cpu | cuda
+
+faiss:
+  ivf_nlist: 1024
+  nprobe_grid: [8, 32, 128]
+  benchmark_queries: 2000
+  top_k: 100
+
+ranker:
+  # fraction of train interactions (latest by time) carved out as ranker labels.
+  # NEVER touches val/test.
+  ranker_window_frac: 0.10
+  candidates_per_user: 200
+  max_users: 50000            # cap ranker training users for tractability
+  ranker_val_frac: 0.10       # user-level split of ranker data for early stopping
+  top_genres: 8
+  lightgbm:
+    objective: lambdarank
+    metric: ndcg
+    eval_at: [10]
+    num_leaves: 63
+    max_depth: 8
+    learning_rate: 0.05
+    n_estimators: 500
+    early_stopping_rounds: 50
+    min_child_samples: 20
+
+serving:
+  host: 0.0.0.0
+  port: 8000
+  retrieve_k: 200             # candidates fetched from FAISS before reranking
+  default_k: 10

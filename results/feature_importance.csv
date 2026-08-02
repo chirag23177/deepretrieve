@@ -1,0 +1,16 @@
+feature,gain
+recency_days,40715.01
+item_pop_log,34388.52
+retrieval_score,32466.27
+user_activity_log,18417.69
+item_mean_rating,12015.50
+user_genre_affinity,8358.44
+user_mean_rating,6031.22
+genre_Adventure,1666.62
+genre_Thriller,860.83
+genre_Action,538.02
+genre_Drama,482.29
+genre_Comedy,314.05
+genre_Crime,310.67
+genre_Romance,293.00
+genre_Horror,143.94
