@@ -17,3 +17,4 @@ scripts/
 __pycache__/
 *.pyc
 *.ipynb
+RecSync.md

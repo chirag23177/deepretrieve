@@ -194,8 +194,9 @@ to it outright. Any retrieval model that does not clear 0.1333 is not learning
 anything a `value_counts()` could not.
 
 Not attempted: ALS matrix factorization (optional in the plan, cut for time), and
-GPU training — everything here was trained CPU-only on an i9-13900H, ~6.5 min per
-epoch, 6 epochs to early stopping.
+GPU training — everything here was trained CPU-only on an i9-13900H: 7.3 min per
+epoch on average (43.6 min total, 6 epochs to early stopping); the ablation run
+took 26.9 min over 3 epochs.
 
 ## Reproduce
 
