@@ -1,4 +1,4 @@
-# deepretrieve — Two-Stage Neural Recommendation System
+# Deepretrieve — Two-Stage Neural Recommendation System
 
 A production-shaped recommender on MovieLens-25M: a **two-tower retrieval model**
 (PyTorch, in-batch softmax negatives with logQ popularity correction) narrows the
